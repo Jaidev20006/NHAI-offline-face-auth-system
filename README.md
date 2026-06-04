@@ -9,7 +9,7 @@
 ![Hackathon](https://img.shields.io/badge/NHAI_Hackathon-2026-orange?style=for-the-badge)
 
 **Offline facial recognition & liveness detection for NHAI field personnel**  
-*Datalake 3.0 Integration · 100% on-device · AES-256 encrypted · < 1 second auth*
+*On-device processing · Encrypted local storage · Fast authentication (target <1s)*
 
 </div>
 
@@ -42,7 +42,7 @@ Built for the **NHAI Hackathon 2026** targeting Datalake 3.0 integration. Design
 | Works fully offline | 100% on-device CPU inference — zero cloud calls during auth |
 | Android + iOS | React Native 0.73.6 — single codebase, both platforms |
 | Model ≤ 20 MB | MLKit (bundled) + MobileFaceNet 4 MB = **~5 MB total** |
-| Accuracy > 95% | MLKit landmark detection + cosine similarity matching |
+| Accuracy | Landmark-based matching + cosine similarity (prototype-level evaluation) |
 | Liveness detection | Two-stage: passive stability check + active challenge |
 | Mid-range devices | CPU-only inference, no GPU — works on 3 GB RAM |
 | Latency < 1 second | Target: < 1 s end-to-end on mid-range Android |
@@ -54,8 +54,8 @@ Built for the **NHAI Hackathon 2026** targeting Datalake 3.0 integration. Design
 
 - **🔒 100% Offline Auth** — no network required during authentication or liveness check
 - **👁 Two-Stage Liveness Detection** — passive stability check + active challenges (blink / smile / head-turn)
-- **🧠 On-Device Face Recognition** — MobileFaceNet with ArcFace loss, cosine similarity matching
-- **🔐 AES-256 Encrypted Storage** — embeddings encrypted at rest via op-sqlite, no raw images stored
+- **🧠 Face Recognition — MLKit landmarks + cosine similarity (prototype implementation)
+- **🔐Secure Local Storage — encrypted embedding storage structure (AES design ready)
 - **☁️ Resilient Sync** — exponential back-off queue syncs to AWS when connectivity returns
 - **📱 Mid-Range Device Optimised** — CPU-only inference, tested on Android 7+ (minSdk 24)
 - **🎯 Anti-Replay Protection** — liveness challenge order randomised every session
@@ -77,8 +77,8 @@ Built for the **NHAI Hackathon 2026** targeting Datalake 3.0 integration. Design
 │  │    op-sqlite (AES-256)   │◀── MobileFaceNet       │
 │  │  employees table         │    (cosine match)      │
 │  │  attendance_log table    │                        │
-│  │  sync_queue table        │──▶ AWS API Gateway     │
-│  └──────────────────────────┘    (when online)       │
+│  │  sync_queue table        │──▶  AWS Sync           │
+│  └──────────────────────────┘(simulated queue layer) │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -89,7 +89,7 @@ Built for the **NHAI Hackathon 2026** targeting Datalake 3.0 integration. Design
     └▶ 🔍 MLKit Face Detection (~20 ms)
            └▶ 👁 Passive Stability Check (~800 ms, 8 frames)
                   └▶ 🎯 Active Liveness Challenge (random 2-of-4)
-                         └▶ 🧠 MobileFaceNet Embedding (~120 ms)
+                         └▶ 🧠 ace feature extraction (prototype embedding module)(~120 ms)
                                 └▶ 🔐 Cosine Match vs SQLite (~5 ms)
                                        └▶ ✅ Log Attendance
                                               └▶ ☁️ Sync when Online
@@ -197,7 +197,7 @@ src/
 
 ## Security
 
-### AES-256 Encrypted Embeddings
+### AES-256 Encrypted Embeddings (implementation level)
 
 - Face embeddings encrypted with **AES-256-CBC** before writing to SQLite
 - Encryption key derived from `device_id + random_salt` via PBKDF2
@@ -274,7 +274,13 @@ Requirement: ≤ 20 MB — we use **65% less** than the allowed maximum.
        └─ Timeout  → retry on next connection event 🔄
 
 Queue persists across app restarts — zero data loss guaranteed.
+Sync layer is implemented as a queue-based architecture for future backend integration
 ```
+##📌 Hackathon Note
+
+This project is a functional prototype built for the NHAI Hackathon 2026.
+The system demonstrates offline biometric authentication with a scalable architecture designed for production extension.
+     “We built a working offline prototype with production-ready architecture design”
 ## Licence
 
 All packages used are open-source (Apache 2.0 / MIT). No proprietary SDKs. No paid licences.
