@@ -275,25 +275,6 @@ Requirement: ≤ 20 MB — we use **65% less** than the allowed maximum.
 
 Queue persists across app restarts — zero data loss guaranteed.
 ```
-
----
-
-## Hackathon Submission
-
-**NHAI Hackathon 2026 · Datalake 3.0 Integration**  
-Submission deadline: 05 June 2026
-
-### Evaluation Criteria
-
-| Criterion | Weight | Our Approach |
-|---|---|---|
-| Innovation | 30 pts | INT8 models, CLAHE preprocessing, 3-frame ensemble, 2-stage liveness |
-| Feasibility | 30 pts | Working prototype on Realme P2 Pro, drop-in component for Datalake 3.0 |
-| Scalability | 20 pts | Exponential back-off sync, AES-256 storage, Indian demographic support |
-| Docs & Presentation | 20 pts | Full TypeScript source, architecture diagram, integration guide |
-
----
-
 ## Licence
 
 All packages used are open-source (Apache 2.0 / MIT). No proprietary SDKs. No paid licences.
