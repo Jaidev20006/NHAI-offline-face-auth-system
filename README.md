@@ -1,5 +1,5 @@
 # NHAI Secure Offline Face Auth
-### NHAI Hackathon 2025 — Winning Submission
+### NHAI Hackathon 2026 
 
 A fully offline facial recognition + liveness detection system for field personnel authentication,
 built in React Native for Android & iOS.
